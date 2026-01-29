@@ -39,13 +39,17 @@ const userSchema = new mongoose.Schema(
             enum: ['user', 'seller', 'admin'],
             default: 'user',
         },
-        address: {
-            type: String,
 
-        },
         products: {
             type: mongoose.Schema.ObjectId,
             ref: 'product'
+        },
+        sellerDetails: {
+            shopName: String,
+            description: String,
+            bankAccount: String,
+            isVerified: { type: Boolean, default: false },
+            joinedAt: Date
         }
     }, { timestamps: true }
 )

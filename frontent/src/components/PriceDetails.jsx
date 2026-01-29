@@ -1,8 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import { useTheme } from "../contexts/ThemeContext";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const PriceDetails = ({ items }) => {
-
+  const navigate = useNavigate();
+  const { theme } = useTheme();
+  const user = useSelector((store) => store.Auth.user);
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [address, setAddress] = useState({
     street: "",
@@ -12,10 +17,7 @@ const PriceDetails = ({ items }) => {
   });
 
   const itemsCount = items.length;
-  const totalOriginalPrice = items.reduce(
-    (sum, item) => sum + item.price,
-    0
-  );
+  const totalOriginalPrice = items.reduce((sum, item) => sum + item.price, 0);
 
   const protectFee = 18;
   const totalAmount = totalOriginalPrice + protectFee;
@@ -38,6 +40,25 @@ const PriceDetails = ({ items }) => {
       return;
     }
 
+    const streetRegex = /^[a-zA-Z0-9\s,.'-]{3,}$/;
+    const cityRegex = /^[a-zA-Z\s.-]{2,}$/;
+    const zipRegex = /^\d{5}(-\d{4})?$/;
+    const countryRegex = /^[a-zA-Z\s]{2,}$/;
+
+    if (
+      !address.street ||
+      !streetRegex.test(address.street.trim()) ||
+      !address.city ||
+      !cityRegex.test(address.city.trim()) ||
+      !address.zipCode ||
+      !zipRegex.test(address.zipCode.toString().trim()) ||
+      !address.country ||
+      !countryRegex.test(address.country.trim())
+    ) {
+      alert("Please fill in a valid, complete address.");
+      return;
+    }
+
     try {
       const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -46,26 +67,26 @@ const PriceDetails = ({ items }) => {
         {
           items: items.map((item) => ({
             productId: item.productId,
-            name: item.title,
+            name: item.name,
             quantity: item.quantity || 1,
             priceAtPurchase: item.price,
           })),
           totalAmount,
           address,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       alert("Order placed successfully");
       setShowAddressForm(false);
     } catch (err) {
-      alert("Order failed");
       console.log(err);
+      alert(`Order failed", ${err.response.data.msg}`);
     }
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-sm">
+    <div className={` bg-white p-4 rounded-lg shadow-md w-full max-w-sm`}>
       <h2 className="text-lg font-semibold mb-4">PRICE DETAILS</h2>
 
       <div className="space-y-2 text-sm">
@@ -90,7 +111,14 @@ const PriceDetails = ({ items }) => {
       {!showAddressForm ? (
         <button
           disabled={!items.length}
-          onClick={() => setShowAddressForm(true)}
+          onClick={() => {
+            if (!user) {
+              alert("Please login to place an order");
+              navigate("/auth");
+              return;
+            }
+            setShowAddressForm(true);
+          }}
           className="w-full mt-4 py-2 bg-pink-600 text-white rounded font-semibold"
         >
           PLACE ORDER

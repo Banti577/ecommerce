@@ -84,12 +84,14 @@ const productSchema = new mongoose.Schema(
 );
 
 productSchema.pre("save", function (next) {
-    if (this.productDiscount > 0) {
-        this.offerPrice =
-            this.productPrice - (this.productPrice * this.productDiscount) / 100;
-    } else {
-        this.offerPrice = this.productPrice;
-    }
+  if (this.productDiscount > 0) {
+    this.offerPrice = Math.round(
+      this.productPrice - (this.productPrice * this.productDiscount) / 100
+    );
+  } else {
+    this.offerPrice = Math.round(this.productPrice);
+  }
 });
+
 
 module.exports = mongoose.model('Product', productSchema);

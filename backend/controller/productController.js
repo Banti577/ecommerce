@@ -39,7 +39,7 @@ const addProduct = async (req, res) => {
 const getAllProducts = async (req, res) => {
 
     try {
-        const products = await Product.find({});
+        const products = await Product.find({}).sort({ createdAt: -1 });;
         return res.status(200).json(products);
 
     } catch (err) {
@@ -124,16 +124,35 @@ const updateProduct = async (req, res) => {
     }
 
 }
+
+const searchProducts = async (req, res) => {
+
+    try {
+
+        const { searchTerm } = req.query;
+        if (!searchTerm) return res.status(400).json({ message: 'Search term "name" is required' });
+
+        const products = await Product.find({
+            productName: { $regex: searchTerm, $options: 'i' }
+        });
+
+        if (products.length == 0) return res.status(404).json(products)
+
+        return res.status(200).json(products)
+
+
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json(err)
+    }
+
+
+}
 module.exports = {
     addProduct,
     getAllProducts,
     getProductById,
     deleteProduct,
-    updateProduct
+    updateProduct,
+    searchProducts
 };
-
-
-
-// req.body = {
-//     productName: "ritik"
-// }

@@ -6,7 +6,6 @@ const { generatejwttoken } = require('../services/Authentication');
 const handleSignup = async (req, res) => {
     try {
         const { email, fullname, gender, password } = req.body;
-        console.log('req body me ye aaya', req.body);
 
         const existUser = await User.findOne({ email });
         if (existUser) return res.status(409).json('User Already Exist');
@@ -73,4 +72,32 @@ const handleLogout = (req, res) => {
     }
 }
 
-module.exports = { handleSignup, handleLogin, handleLogout }
+const becomeSeller = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        if (user.role === "seller") {
+            return res.status(400).json({ msg: "Already a seller" });
+        }
+
+        user.role = "seller";
+        await user.save();
+
+        res.status(200).json({
+            msg: "You are now a seller",
+            user
+        });
+
+    } catch (error) {
+        res.status(500).json({ msg: "Failed to become seller" });
+    }
+};
+
+
+module.exports = { handleSignup, handleLogin, handleLogout, becomeSeller }

@@ -19,16 +19,23 @@ const makeOrder = async (req, res) => {
             return res.status(400).json({ msg: 'Address is required' });
         }
 
-        // OPTIONAL: basic stock check (simple, human-style)
-
 
         for (let item of items) {
+
             console.log("Incoming productId:", item.productId);
             const product = await Product.findById(item.productId);
 
             if (!product) {
                 return res.status(404).json({ msg: 'Product not found' });
             }
+
+
+            if (product.createdBy.toString() === req.user.id.toString()) {
+                return res.status(403).json({
+                    msg: "You cannot buy your own product"
+                });
+            }
+
 
             if (product.productStock < item.quantity) {
                 return res
@@ -67,10 +74,10 @@ const makeOrder = async (req, res) => {
 
 const getMyOrders = async (req, res) => {
     try {
-
-        console.log('order fetching');
         const orders = await Order.find({ userId: req.user.id })
             .sort({ createdAt: -1 });
+
+        console.log('pro is', orders[0].items);
 
         res.status(200).json(orders);
     } catch (err) {

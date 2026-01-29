@@ -8,8 +8,6 @@ const ThemeContext = ({ children }) => {
   const ctheme = JSON.parse(localStorage.getItem("filmspotthema")) || "dark";
   const [theme, setTheme] = useState(ctheme);
 
-  console.log("afetr change value of theme is", theme);
-
   useEffect(() => {
     localStorage.setItem("filmspotthema", JSON.stringify(theme));
   }, [theme]);

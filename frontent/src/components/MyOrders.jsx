@@ -14,6 +14,7 @@ const MyOrders = () => {
         withCredentials: true,
       });
       setOrders(res.data);
+      console.log("order me yah mila", res.data);
     } catch (err) {
       setError("Failed to load orders");
     } finally {
@@ -29,7 +30,7 @@ const MyOrders = () => {
       await axios.patch(
         `${backendUrl}/orders/${orderId}/cancel`,
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
       fetchOrders(); // refresh list
     } catch (err) {
@@ -53,36 +54,53 @@ const MyOrders = () => {
         {orders.map((order) => (
           <div
             key={order._id}
-            className="border rounded p-4 bg-white shadow-sm"
+            className="border rounded p-4 bg-white shadow-sm mb-4"
           >
-            <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-500">
-                Order ID: {order._id}
-              </span>
-              <span className="capitalize font-medium">
+            <div className="flex justify-between text-sm mb-2 border-b pb-2">
+              <div>
+                <p className="text-gray-500">Order ID: {order._id}</p>
+              
+                <p className="text-xs text-gray-400">
+                  Placed on: {new Date(order.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+              <span
+                className={`capitalize font-semibold ${order.status === "pending" ? "text-orange-500" : "text-green-600"}`}
+              >
                 {order.status}
               </span>
             </div>
 
-            <ul className="text-sm mb-3">
+            <div className="mb-3 text-sm">
+              <h3 className="font-medium text-gray-700">Delivery Address:</h3>
+              <p className="text-gray-600">
+                {order.addressToDeliver.street}, {order.addressToDeliver.city} -{" "}
+                {order.addressToDeliver.zipCode}
+              </p>
+            </div>
+
+            {/* Items List */}
+            <ul className="text-sm mb-3 space-y-1">
               {order.items.map((item, index) => (
-                <li key={index}>
-                  {item.name} × {item.quantity}
+                <li key={index} className="flex justify-between">
+                  <span>
+                    {item.name || "Product Name"} × {item.quantity || 1}
+                  </span>
                 </li>
               ))}
             </ul>
 
-            <div className="flex justify-between items-center">
-              <span className="font-semibold">
-                ₹{order.totalAmount}
+            <div className="flex justify-between items-center border-t pt-2">
+              <span className="font-bold text-lg text-blue-600">
+                ₹{parseFloat(order.totalAmount).toLocaleString("en-IN")}
               </span>
 
               {order.status === "pending" && (
                 <button
                   onClick={() => cancelOrder(order._id)}
-                  className="text-red-600 text-sm hover:underline"
+                  className="bg-red-50 text-red-600 px-3 py-1 rounded text-sm font-medium hover:bg-red-100 transition-colors"
                 >
-                  Cancel
+                  Cancel Order
                 </button>
               )}
             </div>

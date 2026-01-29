@@ -24,7 +24,7 @@ const handleValidation = (req, res, next) => {
                 return res.status(400).json({ message: "Invalid gender" });
         }
         if (!PASSWORD_REGEX.test(password)) {
-                return res.status(400).json({ message: "Invalid password formate" });
+                return res.status(400).json("Invalid password formate");
         }
 
         next();

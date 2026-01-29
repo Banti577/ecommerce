@@ -1,15 +1,18 @@
 import { useSelector } from "react-redux";
 
-// import PriceDetails from "./PriceDetails";
 import BagCart from "./BagCart";
 import PriceDetails from "./PriceDetails";
+import EmptyCartMessage from "./EmptyCartMessage.JSX";
+
 
 const BagSummury = () => {
   const bagItems = useSelector((state) => state.Cart);
 
   console.log(" i found bagitems", bagItems);
-  // const productsList = useSelector((state) => state.items);
-  // const bagProducts = productsList.filter((item) => bagItems.includes(item.id));
+
+  if(bagItems.items.length < 1) {
+    return <EmptyCartMessage />
+  }
 
   return (
     <>

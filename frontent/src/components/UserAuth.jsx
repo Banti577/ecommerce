@@ -1,11 +1,16 @@
+import { useDispatch } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
+import axios from "axios";
+
 import { HiEye } from "react-icons/hi";
 import { HiMiniEyeSlash } from "react-icons/hi2";
-import axios from "axios";
-import { useDispatch } from "react-redux";
+
 import { checkAuth } from "../features/cart/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const UserAuth = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     fullname: "",
@@ -47,6 +52,7 @@ const UserAuth = () => {
 
   const handleSinUp = async () => {
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append("fullname", inputs.fullname);
       formData.append("email", inputs.email);
@@ -54,20 +60,25 @@ const UserAuth = () => {
       formData.append("gender", inputs.gender);
 
       const backendUrl = import.meta.env.VITE_BACKEND_URL;
-      console.log("theek yaha to aaya");
-      const response = await axios.post(backendUrl + "/auth/signup", formData, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.post(backendUrl + "/auth/signup", formData);
+
       console.log("something heppend", response);
       dispatch(checkAuth());
+      toast.success("Signup successful. You can login now.");
+
       setInputs({
         fullname: "",
         email: "",
         password: "",
         gender: "",
       });
+
+      setIsLogin(true);
     } catch (err) {
-      console.log("thisis the catch error", err);
+      console.log("signoinig err", err);
+      toast.error(err?.response?.data || "Signup failed");
+    } finally {
+      setLoading(false);
     }
   };
   const handleLogin = async () => {
@@ -76,7 +87,11 @@ const UserAuth = () => {
       const response = await axios.post(backendUrl + "/auth/login", inputs, {
         withCredentials: true,
       });
-      console.log("something heppend", response);
+      if (response.status === 200) {
+        dispatch(checkAuth());
+        toast.success("Login Successful");
+        setTimeout(() => navigate("/"), 1500);
+      }
 
       setInputs({
         fullname: "",
@@ -85,12 +100,19 @@ const UserAuth = () => {
         gender: "",
       });
     } catch (err) {
-      console.log("thisis the catch error", err);
+      console.log(err);
+      toast.error(
+        err?.response?.data?.msg ||
+          err?.response?.data?.message ||
+          err?.response?.data ||
+          "Invalid email or password",
+      );
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+      <ToastContainer position="top-center" />
       <div className="w-full max-w-md bg-white border rounded shadow-sm p-6">
         <h2 className="text-xl font-semibold mb-5">
           {isLogin ? "Login" : "Create account"}
@@ -168,7 +190,7 @@ const UserAuth = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-600 text-white py-2 rounded font-medium hover:bg-green-700 disabled:opacity-60"
+            className="w-full bg-green-600 text-white py-2 rounded font-medium hover:bg-green-700 disabled:opacity-60 cursor-pointer"
           >
             {loading ? "Please wait..." : isLogin ? "Login" : "Sign up"}
           </button>

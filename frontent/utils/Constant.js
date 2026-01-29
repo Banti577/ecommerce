@@ -26,3 +26,5 @@ export const THEME_COLORS = [{
   curr_TEXT: "text-white",
 }
 ];
+
+

@@ -2,66 +2,66 @@ import { useDispatch } from "react-redux";
 import { removeCart } from "../features/cart/cartSlice";
 
 const BagCart = ({ item }) => {
-  console.log('indisde item', item);
+  console.log("indisde item", item);
   const dispatch = useDispatch();
 
   const handleRemoveFromCart = (productId) => {
     dispatch(removeCart(productId));
   };
   return (
-    <div className="max-w-wd m-2 overflow-hidden bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col">
-      <div className="relative w-full pt-[100%]">
-        {
-          <img
-            src={item.image}
-            className="absolute top-0 left-0 w-full object-cover"
-            alt={item.productName}
-          />
-        }
+    <div className="m-2 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col overflow-hidden">
+      <div className="relative h-full w-full aspect-square bg-gray-50">
+        <img
+          src={item.image}
+          alt={item.productName}
+          className="w-full h-full"
+        />
 
         {item.showDiscount > 0 && (
-          <span className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-            {item.showDiscount}% Off
+          <span className="absolute top-2 left-2 bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded">
+            {item.showDiscount}% OFF
           </span>
         )}
       </div>
 
       <div className="p-4 flex flex-col flex-grow">
-        <h6 className="text-sm text-gray-500 mb-1 uppercase tracking-wide">
+        <span className="text-xs text-gray-500 uppercase tracking-wide mb-1">
           {item.name}
-        </h6>
+        </span>
 
-        <h5 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
+        <h3 className="text-base font-semibold text-gray-900 leading-snug line-clamp-2 mb-1">
           {item.productName}
-        </h5>
+        </h3>
 
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+        <p className="text-sm text-gray-600 line-clamp-2 mb-3">
           {item.description}
         </p>
 
-        <div className="flex items-baseline gap-2 mb-4">
-          <span className="text-xl font-bold text-gray-900">₹{item.price}</span>
-          {item.price.originalPrize && (
+        {/* PRICE */}
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-lg font-bold text-gray-900">₹{item.price}</span>
+
+          {item.price?.originalPrize && (
             <span className="text-sm text-gray-400 line-through">
               ₹{item.quantity}
             </span>
           )}
         </div>
 
+        {/* ACTION */}
         <div className="mt-auto">
           {item.length > 0 ? (
             <button
               type="button"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
-              // onClick={handleAddToCart}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-lg transition-colors"
             >
               Add to Cart
             </button>
           ) : (
             <button
               type="button"
-              className="w-full bg-white border border-red-500 text-red-500 hover:bg-red-50 font-medium py-2 px-4 rounded-md transition-colors duration-200"
               onClick={() => handleRemoveFromCart(item.productId)}
+              className="w-full border border-red-500 text-red-600 hover:bg-red-50 text-sm font-medium py-2 rounded-lg transition-colors"
             >
               Remove from Cart
             </button>
