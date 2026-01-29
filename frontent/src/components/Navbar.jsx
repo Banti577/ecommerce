@@ -176,7 +176,7 @@ const Navbar = () => {
                     My Orders
                   </li>
                   <li
-                    onClick={() => handleLogout(dispatch)}
+                    onClick={() => handleLogout(dispatch, navigate)}
                     className="px-4 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 font-semibold cursor-pointer border-t"
                   >
                     Logout
@@ -199,7 +199,7 @@ const Navbar = () => {
 
             <button
               onClick={() => handleBecomeSeller({ user, dispatch, navigate })}
-              className="px-4 py-2 rounded-full border text-sm opacity-70 hover:opacity-100"
+              className="px-4 py-2 rounded-full border text-sm  cursor-pointer"
             >
               {user && user.role === "user" ? "Become a seller" : "Seller Dash"}
             </button>

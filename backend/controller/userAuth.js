@@ -89,7 +89,15 @@ const becomeSeller = async (req, res) => {
         user.role = "seller";
         await user.save();
 
-        res.status(200).json({
+        const token = generatejwttoken(user);
+        res.cookie('token', token, {
+            httpOnly: true,
+            maxAge: 60 * 60 * 1000, // 1 hour
+            sameSite: 'lax',
+            secure: false,
+        })
+
+        return res.status(200).json({
             msg: "You are now a seller",
             user
         });

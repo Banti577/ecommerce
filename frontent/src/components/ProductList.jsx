@@ -1,19 +1,23 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 const ProductList = ({ products }) => {
   const { theme } = useTheme();
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  const categories = useMemo(() => {
-    return ["all", ...new Set(products.map((p) => p.productCategory))];
-  }, [products]);
+  const rawCategories = products.map((p) => p.productCategory);
 
-  const filteredProducts = useMemo(() => {
-    if (selectedCategory === "all") return products;
-    return products.filter((p) => p.productCategory === selectedCategory);
-  }, [products, selectedCategory]);
+  const uniqueCategories = rawCategories.filter(
+    (category, index, array) => array.indexOf(category) === index,
+  );
+
+  const categories = ["all", ...uniqueCategories];
+
+  const filteredProducts =
+    selectedCategory === "all"
+      ? products
+      : products.filter((p) => p.productCategory === selectedCategory);
 
   return (
     <>

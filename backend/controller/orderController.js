@@ -77,9 +77,9 @@ const getMyOrders = async (req, res) => {
         const orders = await Order.find({ userId: req.user.id })
             .sort({ createdAt: -1 });
 
-        console.log('pro is', orders[0].items);
+        if (!orders) return res.status(200).json('No Orders Available');
 
-        res.status(200).json(orders);
+        return res.status(200).json(orders);
     } catch (err) {
         console.log(err)
 

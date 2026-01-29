@@ -1,15 +1,12 @@
 import axios from "axios";
 import { updateUser } from "../../features/cart/authSlice";
 
-
-
 export const handleBecomeSeller = async ({ user, dispatch, navigate }) => {
 
   if (!user) {
     navigate("/auth");
     return;
   }
-
   if (user.role === "seller") {
     navigate("/seller/dashboard");
     return;
@@ -22,9 +19,10 @@ export const handleBecomeSeller = async ({ user, dispatch, navigate }) => {
       { withCredentials: true }
     );
 
-    dispatch(updateUser({
-      payload: res.data.user,
-    }));
+
+    dispatch(updateUser(
+   res.data.user,
+    ));
 
     navigate("/seller/dashboard");
   } catch (error) {

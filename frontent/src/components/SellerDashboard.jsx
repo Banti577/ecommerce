@@ -2,6 +2,22 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const SellerDashboard = () => {
+  const handleDeleteProduct = async (id) => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`,
+        {
+          withCredentials: true,
+        },
+      );
+      if (response.status === 200) {
+        setSellerProducts((prev) => prev.filter((p) => p._id !== id));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const [form, setForm] = useState({
     name: "",
     desc: "",
@@ -12,10 +28,10 @@ const SellerDashboard = () => {
     stock: "",
   });
 
-  const [products, setProducts] = useState([]);
+  const [sellerProducts, setSellerProducts] = useState([]);
+
   const [loading, setLoading] = useState(false);
 
-  // ---------- FORM ----------
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -58,22 +74,22 @@ const SellerDashboard = () => {
         stock: "",
       });
 
-      fetchMyProducts(); // refresh list
+      fetchMyProducts();
     } catch (error) {
+      console.log("backemd se ye err mila", error);
       alert(error?.response?.data?.msg || "Failed to add product");
     } finally {
       setLoading(false);
     }
   };
 
-  // ---------- FETCH SELLER PRODUCTS ----------
   const fetchMyProducts = async () => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/products/my`,
         { withCredentials: true },
       );
-      setProducts(res.data || []);
+      setSellerProducts(res.data || []);
     } catch (err) {
       console.log("fetch error", err);
     }
@@ -85,7 +101,6 @@ const SellerDashboard = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-10">
-      {/* CREATE PRODUCT */}
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-xl border space-y-4 max-w-2xl"
@@ -162,11 +177,11 @@ const SellerDashboard = () => {
       <div>
         <h2 className="text-xl font-semibold mb-4">My Products</h2>
 
-        {products.length === 0 ? (
+        {sellerProducts.length === 0 ? (
           <p className="text-gray-500">No products created yet.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {products.map((p) => (
+            {sellerProducts.map((p) => (
               <div
                 key={p._id}
                 className="border rounded-xl p-4 bg-white shadow-sm"
@@ -182,6 +197,16 @@ const SellerDashboard = () => {
                   <span className="text-gray-400 ml-2">
                     Stock: {p.productStock}
                   </span>
+                </div>
+
+                <div>
+                  <button
+                    className="bg-red-500 p-2 mt-4 cursor-pointer"
+                    type="button"
+                    onClick={() => handleDeleteProduct(p._id)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             ))}

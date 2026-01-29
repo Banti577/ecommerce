@@ -16,6 +16,7 @@ const MyOrders = () => {
       setOrders(res.data);
       console.log("order me yah mila", res.data);
     } catch (err) {
+      console.log(err)
       setError("Failed to load orders");
     } finally {
       setLoading(false);

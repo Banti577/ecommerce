@@ -136,10 +136,11 @@ const UserAuth = () => {
 
               <div>
                 <p className="text-sm text-gray-600 mb-1">Gender</p>
-                <div className="flex gap-4 text-sm">
+                <div className="flex gap-4 text-sm ">
                   {["male", "female", "other"].map((g) => (
-                    <label key={g} className="flex items-center gap-1">
+                    <label key={g} className="flex items-center gap-1 ">
                       <input
+                        className="cursor-pointer"
                         type="radio"
                         name="gender"
                         value={g}
@@ -203,7 +204,7 @@ const UserAuth = () => {
               setIsLogin(!isLogin);
               setError("");
             }}
-            className="ml-2 text-green-600"
+            className="ml-2 text-green-600 cursor-pointer"
           >
             {isLogin ? "Sign up" : "Login"}
           </button>

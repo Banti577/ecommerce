@@ -1,6 +1,7 @@
 
 const Product = require('../models/ProductModel');
 
+
 const addProduct = async (req, res) => {
     try {
 
@@ -31,7 +32,7 @@ const addProduct = async (req, res) => {
         await newProduct.save()
         return res.status(201).json({ msg: 'Product ADDED' })
     } catch (err) {
-        console.log(err)
+        console.log('oh to ye errr hai', err)
         return res.status(400).json({ msg: 'Product cant be added' })
     }
 };
@@ -61,6 +62,7 @@ const getProductById = async (req, res) => {
 
 
     } catch (err) {
+        console.log(err);
         return res.status(500).json({
             error: 'Server error'
         });
@@ -138,7 +140,7 @@ const searchProducts = async (req, res) => {
 
         if (products.length == 0) return res.status(404).json(products)
 
-        return res.status(200).json(products)
+        return res.status(200).json(products);
 
 
     } catch (err) {
@@ -148,11 +150,27 @@ const searchProducts = async (req, res) => {
 
 
 }
+const fetchSellerProducts = async (req, res) => {
+
+    try {
+        const userId = req.user.id;
+
+        const products = await Product.find({ createdBy: userId });
+        if (!products) return res.status(200).json({ msg: 'Products not Listed' });
+
+        return res.status(200).json(products);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+
+}
+
 module.exports = {
     addProduct,
     getAllProducts,
     getProductById,
     deleteProduct,
     updateProduct,
-    searchProducts
+    searchProducts,
+    fetchSellerProducts
 };
