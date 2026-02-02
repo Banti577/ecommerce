@@ -13,11 +13,8 @@ const ThemeContext = ({ children }) => {
   }, [theme]);
 
   const activeTheme = useMemo(() => {
-    console.log("Searching for theme string:", theme);
     return THEME_COLORS.find((t) => t.themeName === theme) || THEME_COLORS;
   }, [theme]);
-
-  console.log("active theme is", activeTheme);
 
   const value = {
     theme: activeTheme,

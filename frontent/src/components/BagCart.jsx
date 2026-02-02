@@ -9,16 +9,16 @@ const BagCart = ({ item }) => {
   };
 
   return (
-    <div className="m-2 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden">
-      <div className="relative aspect-square bg-gray-50">
+    <div className="m-2 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden ">
+      <div className="relative h-full bg-gray-50">
         <img
           src={item.image}
           alt={item.name}
-          className="w-full h-full object-cover"
+          className="w-full object-cover"
         />
       </div>
 
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-4 flex flex-col grow">
         <span className="text-xs text-gray-500 uppercase mb-1">
           {item.brand}
         </span>
@@ -47,7 +47,7 @@ const BagCart = ({ item }) => {
 
         <button
           onClick={handleRemoveFromCart}
-          className="mt-auto border border-red-500 text-red-600 py-2 rounded-lg hover:bg-red-50"
+          className="mt-auto border border-red-500 text-red-600 py-2 rounded-lg hover:bg-red-50 cursor-pointer"
         >
           Remove from Cart
         </button>

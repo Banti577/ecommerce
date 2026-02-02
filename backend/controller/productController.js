@@ -1,6 +1,6 @@
 
 const Product = require('../models/ProductModel');
-
+const Order = require('../models/orderModel');
 
 const addProduct = async (req, res) => {
     try {
@@ -165,6 +165,31 @@ const fetchSellerProducts = async (req, res) => {
 
 }
 
+const viewSellerSell = async (req, res) => {
+
+    try {
+
+        const sellerId = req.user.id;
+
+        const sellerProducts = await Product.find({ createdBy: sellerId })
+            .select('_id');
+
+        const orders = await Order.find({
+            'items.productId': { $in: sellerProducts }
+        })
+            .populate('userId', 'fullName email')
+            .populate('items.productId', 'productName productPrice createdBy');
+
+        return res.status(200).json(orders)
+
+
+
+    } catch (err) {
+        console.log(err)
+    }
+
+}
+
 module.exports = {
     addProduct,
     getAllProducts,
@@ -172,5 +197,6 @@ module.exports = {
     deleteProduct,
     updateProduct,
     searchProducts,
-    fetchSellerProducts
+    fetchSellerProducts,
+    viewSellerSell
 };

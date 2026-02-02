@@ -11,12 +11,13 @@ export const THEME_COLORS = [{
   themeName: 'light',
   curr_BG: "bg-[#F5F5F5]",
   curr_TEXT: "text-[#4a5063]",
+
 }
   ,
 {
 
   themeName: 'dark',
-  curr_BG: "bg-[#343434]",
+  curr_BG: "bg-[#020617]",
   curr_TEXT: "text-white",
 },
 {

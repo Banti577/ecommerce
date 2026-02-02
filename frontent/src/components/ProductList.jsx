@@ -21,26 +21,27 @@ const ProductList = ({ products }) => {
 
   return (
     <>
+    <div>
       <div className="flex justify-end px-6 p-2 mb-4">
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="border rounded-md px-3 py-2 text-sm outline-none"
+          className="border rounded-md px-3 py-2 text-sm outline-none cursor-pointer "
         >
           {categories.map((item) => (
-            <option key={item} value={item}>
+            <option className="cursor-pointer" key={item} value={item} >
               {item.toUpperCase()}
             </option>
           ))}
         </select>
       </div>
 
-      <div className="w-full flex flex-wrap justify-center gap-6 p-4">
+      <div className="w-full flex flex-wrap justify-center gap-6 p-1">
         {filteredProducts.map((item) => (
           <div
             key={item._id}
             className={`${theme.curr_BG} ${theme.curr_TEXT}
-            w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5
+            w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/5
             rounded-xl border border-gray-200
             shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden`}
           >
@@ -81,6 +82,7 @@ const ProductList = ({ products }) => {
             </Link>
           </div>
         ))}
+      </div>
       </div>
     </>
   );

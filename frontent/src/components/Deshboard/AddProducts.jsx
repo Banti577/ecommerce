@@ -1,23 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-
-const SellerDashboard = () => {
-  const handleDeleteProduct = async (id) => {
-    try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`,
-        {
-          withCredentials: true,
-        },
-      );
-      if (response.status === 200) {
-        setSellerProducts((prev) => prev.filter((p) => p._id !== id));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+const AddProducts = () => {
   const [form, setForm] = useState({
     name: "",
     desc: "",
@@ -27,9 +10,6 @@ const SellerDashboard = () => {
     discount: "",
     stock: "",
   });
-
-  const [sellerProducts, setSellerProducts] = useState([]);
-
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -73,31 +53,12 @@ const SellerDashboard = () => {
         discount: "",
         stock: "",
       });
-
-      fetchMyProducts();
     } catch (error) {
-      console.log("backemd se ye err mila", error);
       alert(error?.response?.data?.msg || "Failed to add product");
     } finally {
       setLoading(false);
     }
   };
-
-  const fetchMyProducts = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/my`,
-        { withCredentials: true },
-      );
-      setSellerProducts(res.data || []);
-    } catch (err) {
-      console.log("fetch error", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchMyProducts();
-  }, []);
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-10">
@@ -169,52 +130,13 @@ const SellerDashboard = () => {
 
         <button
           disabled={loading}
-          className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+          className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 cursor-pointer"
         >
           {loading ? "Adding..." : "Add Product"}
         </button>
       </form>
-      <div>
-        <h2 className="text-xl font-semibold mb-4">My Products</h2>
-
-        {sellerProducts.length === 0 ? (
-          <p className="text-gray-500">No products created yet.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {sellerProducts.map((p) => (
-              <div
-                key={p._id}
-                className="border rounded-xl p-4 bg-white shadow-sm"
-              >
-                <h3 className="font-semibold line-clamp-1">{p.productName}</h3>
-
-                <p className="text-sm text-gray-600 line-clamp-2 my-1">
-                  {p.productDesc}
-                </p>
-
-                <div className="text-sm mt-2">
-                  <span className="font-medium">₹{p.productPrice}</span>
-                  <span className="text-gray-400 ml-2">
-                    Stock: {p.productStock}
-                  </span>
-                </div>
-
-                <div>
-                  <button
-                    className="bg-red-500 p-2 mt-4 cursor-pointer"
-                    type="button"
-                    onClick={() => handleDeleteProduct(p._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 };
 
-export default SellerDashboard;
+export default AddProducts;

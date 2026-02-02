@@ -1,10 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { removeCart } from "../features/cart/cartSlice";
 
 const PriceDetails = ({ items }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.Auth.user);
 
@@ -44,7 +46,6 @@ const PriceDetails = ({ items }) => {
       return;
     }
 
-    // validation
     const streetRegex = /^[a-zA-Z0-9\s,.'-]{3,}$/;
     const cityRegex = /^[a-zA-Z\s.-]{2,}$/;
     const zipRegex = /^\d{5}(-\d{4})?$/;
@@ -77,6 +78,8 @@ const PriceDetails = ({ items }) => {
         },
         { withCredentials: true },
       );
+
+      dispatch(removeCart());
 
       alert("Order placed successfully");
       setShowAddressForm(false);

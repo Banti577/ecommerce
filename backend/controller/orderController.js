@@ -19,7 +19,6 @@ const makeOrder = async (req, res) => {
             return res.status(400).json({ msg: 'Address is required' });
         }
 
-
         for (let item of items) {
 
             console.log("Incoming productId:", item.productId);

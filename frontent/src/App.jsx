@@ -7,14 +7,14 @@ import "./App.css";
 import { fetchProducts } from "./features/cart/productSlice";
 import { checkAuth } from "./features/cart/authSlice";
 
-import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import UserAuth from "./components/UserAuth";
 import ProductDeteils from "./components/ProductDeteils";
 import BagSummury from "./components/BagSummury";
 import MyOrders from "./components/MyOrders";
-import SellerDashboard from "./components/SellerDashboard";
 import PageNotFound from "./components/PageNotFound";
+import Deshboard from "./components/Deshboard/Deshboard";
+import MainLayout from "./components/MainLayout";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,15 +30,16 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar />
-
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<UserAuth />} />
-          <Route path="/products/:id" element={<ProductDeteils />} />
-          <Route path="/checkout/cart" element={<BagSummury />} />
-          <Route path="/myorders" element={<MyOrders />} />
-          <Route path="/seller/dashboard" element={<SellerDashboard />} />
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<UserAuth />} />
+            <Route path="/products/:id" element={<ProductDeteils />} />
+            <Route path="/checkout/cart" element={<BagSummury />} />
+            <Route path="/myorders" element={<MyOrders />} />
+          </Route>
+
+          <Route path="/seller/dashboard" element={<Deshboard />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

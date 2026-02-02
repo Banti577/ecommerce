@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 
-const { addProduct, getAllProducts, getProductById, deleteProduct, updateProduct, searchProducts, fetchSellerProducts } = require('../controller/productController');
+const { addProduct, getAllProducts, getProductById, deleteProduct, updateProduct, searchProducts, fetchSellerProducts, viewSellerSell } = require('../controller/productController');
 
 const { verifyjwttoken } = require('../services/Authentication');
 
@@ -23,10 +23,13 @@ const upload = multer({ storage: storage }).array("image", 5);
 
 router.get('/products/my', verifyjwttoken('token'),  fetchSellerProducts);
 
-
 router.get('/products/search', searchProducts)
 router.get('/products', getAllProducts)
+
+router.get('/products/view-sell', verifyjwttoken('token'), viewSellerSell);
+
 router.get('/products/:id', getProductById)
+
 
 router.use(verifyjwttoken('token'))
 
@@ -34,6 +37,7 @@ router.use(verifyjwttoken('token'))
 router.post('/products', upload, addProduct)
 router.patch('/products/:id', upload, updateProduct);
 router.delete('/products/:id', deleteProduct)
+
 
 
 module.exports = router;

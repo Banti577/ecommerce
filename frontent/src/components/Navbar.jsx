@@ -78,7 +78,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`${theme && `${theme.curr_BG} ${theme.curr_TEXT} z-1000 transition-all duration-500 ease-in-out`}`}
+      className={`${theme && `${theme.curr_BG} ${theme.curr_TEXT} z-1000 transition-all duration-500 ease-in-out sticky top-0`}`}
     >
       <nav className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
         <div className="">
@@ -149,6 +149,8 @@ const Navbar = () => {
             <div className="relative">
               <div
                 onClick={handleToggle}
+                onMouseEnter={() => setIsOpen(!isOpen)}
+               
                 className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity font-medium"
               >
                 {user && (
@@ -162,7 +164,9 @@ const Navbar = () => {
               </div>
 
               {user && isOpen && (
-                <ul className="absolute right-0 top-10 mt-2 w-52 bg-white dark:bg-gray-900 border border-gray-200 rounded-xl shadow-2xl py-2 z-50 text-sm overflow-hidden text-red-700">
+                <ul className="absolute right-0 top-10 mt-2 w-52 bg-white dark:bg-gray-900 border border-gray-200 rounded-xl shadow-2xl py-2 z-50 text-sm overflow-hidden text-red-700"
+                 onMouseLeave={() => setIsOpen(false)}
+                >
                   <li
                     onClick={() => navigate("/profile")}
                     className="px-4 py-3 hover:bg-gray-100  cursor-pointer"

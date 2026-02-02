@@ -59,9 +59,9 @@ const ProductDetails = () => {
 
   return (
     <div className="p-4">
-    <div className={`${theme.curr_BG} ${theme.curr_TEXT}  py-10`}>
+    <div className={`${theme.curr_BG} ${theme.curr_TEXT} transition-all duration-300  py-10`}>
       <div
-        className={`${theme.curr_BG}
+        className={`${theme.curr_BG} transition-all duration-300
         max-w-6xl mx-auto p-4 sm:p-6 rounded-xl shadow-lg`}
       >
         <div className="flex flex-col md:flex-row gap-8">
