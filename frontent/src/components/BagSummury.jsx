@@ -25,7 +25,7 @@ const BagSummury = () => {
         <div className="w-[35%] h-fit sticky top-0">
           <PriceDetails items={bagItems.items} />
         </div>
-      </div>
+      </div>    
     </>
   );
 };

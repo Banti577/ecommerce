@@ -4,7 +4,7 @@ const app = express();
 const cors = require('cors')
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5174",
     credentials: true
 }));
 
@@ -32,7 +32,7 @@ app.use('/', staticRoutes)
 app.use('/api', productRoutes)
 app.use('/sales', orderRoutes)
 
-app.get('/user',verifyjwttoken('token'), (req, res) => {
+app.get('/user', verifyjwttoken('token'), (req, res) => {
     if (!req.user) {
 
         return res.status(401).json({ message: "Unauthorized" });
@@ -42,13 +42,15 @@ app.get('/user',verifyjwttoken('token'), (req, res) => {
 })
 
 
-app.listen(PORT, async () => {
+app.listen(PORT, async (req, res) => {
     try {
         console.log(`Server is running on http://localhost:${PORT}`)
         await connectToDB(process.env.MONGO_URL);
 
     } catch (err) {
+        console.log(err)
 
+        return res.status(200).json("server ERROR")
     }
 })
 
