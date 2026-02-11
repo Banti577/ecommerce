@@ -15,6 +15,7 @@ import MyOrders from "./components/MyOrders";
 import PageNotFound from "./components/PageNotFound";
 import Deshboard from "./components/Deshboard/Deshboard";
 import MainLayout from "./components/MainLayout";
+import DeshBoardLayout from "./components/Deshboard/DeshBoardLayout";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,7 +40,10 @@ function App() {
             <Route path="/myorders" element={<MyOrders />} />
           </Route>
 
-          <Route path="/seller/dashboard" element={<Deshboard />} />
+          <Route>
+            <Route element={<DeshBoardLayout />} />
+             <Route path="/seller/dashboard" element={<DeshBoardLayout />} />
+          </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

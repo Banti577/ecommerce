@@ -5,16 +5,17 @@ const Order = require('../models/orderModel');
 const addProduct = async (req, res) => {
     try {
 
-        const { name, desc, category, brand, price, discount, stock } = req.body;
-        const imageFilenames = req.files.map(file => file.filename);
-        const attributes = req.body.attributes ? JSON.parse(req.body.attributes) : {};
-
         const seller = 'seller' === req.user.role;
         if (!seller) {
             return res.status(403).json({
                 error: 'You are not allowed to ADD product'
             });
         }
+
+        const { name, desc, category, brand, price, discount, stock } = req.body;
+        const imageFilenames = req.files.map(file => file.filename);
+        const attributes = req.body.attributes ? JSON.parse(req.body.attributes) : {};
+
 
         const newProduct = new Product({
             productName: name,
@@ -137,7 +138,6 @@ const searchProducts = async (req, res) => {
         const products = await Product.find({
             productName: { $regex: searchTerm, $options: 'i' }
         });
-
         if (products.length == 0) return res.status(404).json(products)
 
         return res.status(200).json(products);
@@ -181,9 +181,6 @@ const viewSellerSell = async (req, res) => {
             .populate('items.productId', 'productName productPrice createdBy');
 
         return res.status(200).json(orders)
-
-
-
     } catch (err) {
         console.log(err)
     }

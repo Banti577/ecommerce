@@ -1,8 +1,8 @@
 import { createContext, useContext, useMemo, useState, useEffect } from "react";
 import { THEME_COLORS } from "../../utils/Constant";
 
-const themeContaxt = createContext();
-export const useTheme = () => useContext(themeContaxt);
+const themeContext = createContext();
+export const useTheme = () => useContext(themeContext);
 
 const ThemeContext = ({ children }) => {
   const ctheme = JSON.parse(localStorage.getItem("filmspotthema")) || "dark";
@@ -23,7 +23,7 @@ const ThemeContext = ({ children }) => {
   };
 
   return (
-    <themeContaxt.Provider value={value}>{children}</themeContaxt.Provider>
+    <themeContext.Provider value={value}>{children}</themeContext.Provider>
   );
 };
 

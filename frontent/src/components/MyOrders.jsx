@@ -16,7 +16,7 @@ const MyOrders = () => {
       setOrders(res.data);
       console.log("order me yah mila", res.data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setError("Failed to load orders");
     } finally {
       setLoading(false);
@@ -28,13 +28,17 @@ const MyOrders = () => {
     if (!ok) return;
 
     try {
-      await axios.patch(
-        `${backendUrl}/orders/${orderId}/cancel`,
-        {},
+      const res = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/sales/orders/${orderId}/cancel`,
         { withCredentials: true },
       );
-      fetchOrders(); // refresh list
+
+      if (res.status === 200) {
+        alert("order cancel successfully");
+      }
+      fetchOrders();
     } catch (err) {
+      console.log(err)
       alert("Order cannot be cancelled");
     }
   };
@@ -60,7 +64,7 @@ const MyOrders = () => {
             <div className="flex justify-between text-sm mb-2 border-b pb-2">
               <div>
                 <p className="text-gray-500">Order ID: {order._id}</p>
-              
+
                 <p className="text-xs text-gray-400">
                   Placed on: {new Date(order.createdAt).toLocaleDateString()}
                 </p>
@@ -80,7 +84,6 @@ const MyOrders = () => {
               </p>
             </div>
 
-            {/* Items List */}
             <ul className="text-sm mb-3 space-y-1">
               {order.items.map((item, index) => (
                 <li key={index} className="flex justify-between">

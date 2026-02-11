@@ -94,4 +94,6 @@ productSchema.pre("save", function (next) {
 });
 
 
+productSchema.index({ productName: 1 });
+
 module.exports = mongoose.model('Product', productSchema);

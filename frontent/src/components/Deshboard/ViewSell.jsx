@@ -1,22 +1,22 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const ViewSell = () => {
-  const[orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
   useEffect(() => {
     async function fetchUserSell() {
       const sell = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/view-sell`,{
-          withCredentials:true
-        }
+        `${import.meta.env.VITE_BACKEND_URL}/api/products/view-sell`,
+        {
+          withCredentials: true,
+        },
       );
 
-       setOrders(sell.data);
+      setOrders(sell.data);
     }
     fetchUserSell();
   }, []);
   return (
-    
     <div style={{ padding: "20px" }}>
       <h2>Seller Orders</h2>
 
@@ -49,10 +49,8 @@ const ViewSell = () => {
             </p>
 
             <p>
-              <strong>Address:</strong>{" "}
-              {order.addressToDeliver.street},{" "}
-              {order.addressToDeliver.city},{" "}
-              {order.addressToDeliver.zipCode},{" "}
+              <strong>Address:</strong> {order.addressToDeliver.street},{" "}
+              {order.addressToDeliver.city}, {order.addressToDeliver.zipCode},{" "}
               {order.addressToDeliver.country}
             </p>
 
@@ -62,17 +60,17 @@ const ViewSell = () => {
             {order.items.map((item, index) => (
               <div key={index} style={{ marginBottom: "10px" }}>
                 <p>
-                  <strong>Product:</strong>{" "}
-                  {item.productId?.productName}
+                  <strong>Product:</strong> {item.productId?.productName}
                 </p>
                 <p>
-                  <strong>Price:</strong> ₹
-                  {item.productId?.productPrice}
+                  <strong>Price:</strong> ₹{item.productId?.productPrice}
                 </p>
                 <p>
                   <strong>Quantity:</strong> {item.quantity}
                 </p>
               </div>
+
+             
             ))}
           </div>
         ))

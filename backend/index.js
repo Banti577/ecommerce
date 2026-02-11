@@ -4,7 +4,7 @@ const app = express();
 const cors = require('cors')
 
 app.use(cors({
-    origin: "http://localhost:5174",
+    origin: "http://localhost:5173",
     credentials: true
 }));
 
@@ -40,7 +40,6 @@ app.get('/user', verifyjwttoken('token'), (req, res) => {
     return res.status(200).json({ user: req.user });
 
 })
-
 
 app.listen(PORT, async (req, res) => {
     try {

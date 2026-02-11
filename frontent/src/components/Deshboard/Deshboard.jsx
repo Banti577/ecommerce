@@ -1,12 +1,19 @@
-import React, { useState } from "react";
-import AddProducts from './AddProducts'
+import { useState } from "react";
+import AddProducts from "./AddProducts";
 import ViewProducts from "./ViewProducts";
 import ViewSell from "./ViewSell";
-
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import UserAuth from "../UserAuth";
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("Add Products"); 
+  const [activeTab, setActiveTab] = useState("Add Products");
   const menuItems = ["Add Products", "View Products", "View Sell"];
+  const navigate = useNavigate();
+
+  const user = useSelector((store) => store.Auth.user);
+
+  if(!user) return navigate('/auth')
 
   const renderContent = () => {
     switch (activeTab) {
@@ -16,7 +23,6 @@ const Dashboard = () => {
         return <ViewProducts />;
       case "View Sell":
         return <ViewSell />;
-
     }
   };
 
@@ -45,9 +51,17 @@ const Dashboard = () => {
       </aside>
 
       <main className="flex-1 flex flex-col">
-        <header className="bg-white p-4 shadow-sm flex justify-between sticky top-0">
+        <header className="bg-white p-4 shadow-sm flex justify-between sticky top-0 items-center">
           <h1 className="text-xl font-semibold">{activeTab}</h1>
-          <span className="bg-gray-200 px-3 py-1 rounded-full">Admin</span>
+          <div className="flex items-center">
+            <span
+              className="bg-red-500 p-2 cursor-pointer rounded-full mr-2 "
+              onClick={() => navigate("/")}
+            >
+              Home
+            </span>
+            <span className="bg-gray-200 px-3 py-1 rounded-full">Admin</span>
+          </div>
         </header>
 
         {/* Dynamic Content Area */}
