@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 
 import BagCart from "./BagCart";
 import PriceDetails from "./PriceDetails";
-import EmptyCartMessage from "./EmptyCartMessage.JSX";
+import EmptyCartMessage from "./EmptyCartMessage";
 
 
 const BagSummury = () => {
