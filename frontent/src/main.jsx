@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import ThemeContext from "./contexts/ThemeContext.jsx";
 import { Provider } from "react-redux";
 import { store } from "./app/store.js";
+import React from 'react'
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
