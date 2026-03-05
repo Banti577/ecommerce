@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+
 const cors = require('cors')
 
 app.use(cors({
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use("/public", express.static("public"));
+
 
 const authroute = require('./routes/authRoutes');
 const staticRoutes = require('./routes/staticRoutes')
@@ -31,6 +33,7 @@ app.use('/auth', authroute);
 app.use('/', staticRoutes)
 app.use('/api', productRoutes)
 app.use('/sales', orderRoutes)
+
 
 app.get('/user', verifyjwttoken('token'), (req, res) => {
     if (!req.user) {
