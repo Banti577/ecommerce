@@ -31,7 +31,7 @@ const UserAuth = () => {
   const hasError = Object.values(error).some((err) => err !== "");
 
   const handleInputs = (e) => {
-  
+
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
 
@@ -43,10 +43,10 @@ const UserAuth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-if (hasError) {
-  alert("Please Enter filed in specified format");
-  return;
-}
+    if (hasError) {
+      alert("Please Enter filed in specified format");
+      return;
+    }
     setError("");
 
 
@@ -122,14 +122,15 @@ if (hasError) {
       console.log(err);
       toast.error(
         err?.response?.data?.msg ||
-          err?.response?.data?.message ||
-          err?.response?.data ||
-          "Invalid email or password",
+        err?.response?.data?.message ||
+        err?.response?.data ||
+        "Invalid email or password",
       );
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-slate-50 px-4">
@@ -236,14 +237,19 @@ if (hasError) {
 
           <button
             type="submit"
-            // disabled={hasError}
             className="w-full bg-green-600 text-white py-2 rounded font-medium hover:bg-green-700 disabled:bg-gray-400 cursor-pointer"
           >
             {loading ? "Please wait..." : isLogin ? "Login" : "Sign up"}
           </button>
         </form>
 
-        <p className="text-sm text-center mt-5 text-gray-500">
+
+        <p className="text-sm text-center mt-5 text-gray-500 ">
+          {isLogin && <button
+
+            className="mx-5 text-blue-600" type="button"
+            onClick={() => navigate('/forget-password')}
+          >forget password</button>}
           {isLogin ? "Don't have an account?" : "Already have an account?"}
           <button
             onClick={() => {

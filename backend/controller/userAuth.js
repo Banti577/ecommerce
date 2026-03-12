@@ -1,4 +1,8 @@
 const bycrypt = require('bcryptjs')
+
+const nodemailer = require('nodemailer')
+
+const redisClient = require('../config/redis.config')
 const User = require('../models/usersModel');
 const { generatejwttoken } = require('../services/Authentication');
 
@@ -72,6 +76,86 @@ const handleLogout = (req, res) => {
     }
 }
 
+const handleForgetAndResetPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        const ExistUser = await User.findOne({ email });
+        if (!ExistUser) return res.status(404).json({ msg: "User Not Exist!" });
+
+        const otp = Math.floor(100000 + Math.random() * 900000);
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS
+            }
+        });
+
+
+        const mailOptions = {
+            from: process.env.FROM_EMAIL,
+            to: email,
+            subject: 'Otp For forget Password',
+            text: `Your OTP is ${otp}`,
+            html: `<h1>Your OTP is ${otp}</h1>`
+        };
+        await redisClient.set('otp', otp);
+        await transporter.sendMail(mailOptions);
+
+        res.status(200).json({ message: 'Email sent' });
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const handleVerifyOtp = async (req, res) => {
+    try {
+
+        const { email, otp } = req.body;
+
+        const Redisotp = await redisClient.get('otp');
+
+        if (otp != Redisotp) return res.status(401).json({ message: 'otp not match' });
+
+        return res.status(200).json({ message: 'otp match suceessfully' });
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const generateNewPassword = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required' });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User Not Exist!' });
+        }
+
+        const salt = await bycrypt.genSalt(10);
+        const hashPassword = await bycrypt.hash(password, salt);
+
+        user.password = hashPassword;
+        await user.save();
+
+        await redisClient.del('otp');
+
+        return res.status(200).json({ message: 'Password updated successfully' });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ message: 'Failed to update password' });
+    }
+}
+
 const becomeSeller = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -110,4 +194,4 @@ const becomeSeller = async (req, res) => {
 
 
 
-module.exports = { handleSignup, handleLogin, handleLogout, becomeSeller }
+module.exports = { handleSignup, handleLogin, handleLogout, becomeSeller, handleForgetAndResetPassword, handleVerifyOtp, generateNewPassword }

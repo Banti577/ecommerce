@@ -17,6 +17,8 @@ import Deshboard from "./components/Deshboard/Deshboard";
 import MainLayout from "./components/MainLayout";
 import DeshBoardLayout from "./components/Deshboard/DeshBoardLayout";
 import VideoStream from "./components/VideoStream";
+import ForgetResetPassword from "./components/ForgetResetPassword";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -39,12 +41,13 @@ function App() {
             <Route path="/products/:id" element={<ProductDeteils />} />
             <Route path="/checkout/cart" element={<BagSummury />} />
             <Route path="/myorders" element={<MyOrders />} />
-             <Route path="/video" element={<VideoStream />} />
+            <Route path="/video" element={<VideoStream />} />
+            <Route path='/forget-password' element={<ForgetResetPassword />} />
           </Route>
 
           <Route>
             <Route element={<DeshBoardLayout />} />
-             <Route path="/seller/dashboard" element={<DeshBoardLayout />} />
+            <Route path="/seller/dashboard" element={<DeshBoardLayout />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>

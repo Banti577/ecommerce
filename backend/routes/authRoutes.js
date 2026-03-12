@@ -7,7 +7,7 @@ const multer = require('multer');
 
 const { handleValidation } = require('../middleware/handleSignupValidation');
 const { validateLogin } = require('../middleware/validateLogin');
-const { handleSignup, handleLogin, handleLogout, becomeSeller } = require('../controller/userAuth');
+const { handleSignup, handleLogin, handleLogout, becomeSeller, handleForgetAndResetPassword, handleVerifyOtp, generateNewPassword } = require('../controller/userAuth');
 const { verifyjwttoken } = require('../services/Authentication');
 
 const storage = multer.diskStorage({
@@ -27,6 +27,12 @@ router.post('/signup', upload.single('profile'), handleValidation, handleSignup)
 router.post('/login', validateLogin, handleLogin)
 
 router.get('/logout', handleLogout)
+
+router.post('/forget-password', handleForgetAndResetPassword);
+
+router.post('/verify-otp', handleVerifyOtp);
+
+router.post('/generate-password', generateNewPassword)
 
 router.use(verifyjwttoken('token'))
 

@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(express.static("public"));
 app.use("/public", express.static("public"));
 
-
+const redisClient = require('./config/redis.config');
 const authroute = require('./routes/authRoutes');
 const staticRoutes = require('./routes/staticRoutes')
 const productRoutes = require('./routes/productRoutes')

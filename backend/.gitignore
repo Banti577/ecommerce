@@ -1,4 +1,6 @@
 node_modules/
 backend/node_modules/
 backend/public/videos
+public/videos
+ public/videos/birdsvideo.mp4
 .env
