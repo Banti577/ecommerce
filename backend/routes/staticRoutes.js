@@ -41,6 +41,7 @@ router.get('/video', (req, res) => {
     const chunksize = (end - start) + 1;
     const file = fs.createReadStream(videoPath, { start, end });
 
+    
     res.writeHead(206, {
         'Content-Range': `bytes ${start}-${end}/${fileSize}`,
         'Accept-Ranges': 'bytes',
