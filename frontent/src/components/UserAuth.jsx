@@ -247,7 +247,7 @@ const UserAuth = () => {
         <p className="text-sm text-center mt-5 text-gray-500 ">
           {isLogin && <button
 
-            className="mx-5 text-blue-600" type="button"
+            className="mx-5 text-blue-600 cursor-pointer" type="button"
             onClick={() => navigate('/forget-password')}
           >forget password</button>}
           {isLogin ? "Don't have an account?" : "Already have an account?"}

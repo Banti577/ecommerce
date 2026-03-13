@@ -141,7 +141,7 @@ const ForgotResetPassword = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full rounded-md bg-green-600 px-4 py-2 text-white disabled:bg-gray-400"
+                            className="w-full rounded-md bg-green-600 px-4 py-2 text-white disabled:bg-gray-400 cursor-pointer"
                         >
                             {loading ? "Sending OTP..." : "Send OTP"}
                         </button>
@@ -168,7 +168,7 @@ const ForgotResetPassword = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full rounded-md bg-blue-600 px-4 py-2 text-white disabled:bg-gray-400"
+                            className="w-full rounded-md bg-blue-600 px-4 py-2 text-white disabled:bg-gray-400 cursor-pointer"
                         >
                             {loading ? "Verifying OTP..." : "Verify OTP"}
                         </button>
@@ -202,7 +202,7 @@ const ForgotResetPassword = () => {
                     </form>
                 )}
 
-                <div className="mt-5 text-center text-sm text-gray-500">
+                <div className="mt-5 text-center text-sm text-gray-500 cursor-pointer">
                     <Link to="/auth" className="text-green-600">
                         Back to login
                     </Link>
